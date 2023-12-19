@@ -1,0 +1,1 @@
+pyinstaller --onfile pywedge.py
