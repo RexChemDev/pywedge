@@ -27,6 +27,9 @@ def port_selection() -> str:
     while True:
         try:
             selected_port = input("Select serial device (index):\n> ")
+            if selected_port == "q":
+                print("Shutting down...")
+                exit()
             portname = ports[int(selected_port)]
             return portname
         except (KeyError, ValueError):
@@ -38,7 +41,8 @@ def readloop(device, readsize, tr_table):
         serial_str = st.get_data(device, serial_bytes=readsize)  
         
         if serial_str:
-            out_str = serial_str.decode().translate(tr_table)
+            out_str = serial_str.decode().translate(tr_table).strip()
+            out_str += "\n"
             print(f"Got string: {serial_str}")
             print(f"Translated to: {repr(out_str)}\n")
             kb.write(out_str)
